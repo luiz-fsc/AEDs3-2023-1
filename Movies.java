@@ -46,4 +46,20 @@ public class Movies{
         this.revenue = revenue;
         this.metascore = metascore;
     }
+
+
+    public String toString(){
+        return "Ranking: " + this.ranking
+        + "\nTitle: " + this.title
+        + "\nGenres: " + this.genres.toString()
+        + "\nDescription: " + this.description
+        + "\nDirector: " + this.director
+        + "\nActors: " + this.actors.toString()
+        + "\nYear: " + this.c.get(Calendar.YEAR)
+        + "\nRun Time: " + this.runTime
+        + "\nRating: " + this.rating
+        + "\nVotes: " + this.votes
+        + "\nRevenue: " + this.revenue
+        + "\nMetascore: " + this.metascore;
+    }
 }
