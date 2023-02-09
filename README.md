@@ -1,4 +1,4 @@
-# luiz-fsc-AEDs3-2023-1
+# AEDs3-2023-1
 
 Neste projeto da disciplina de AEDs 3, os alunos Luiz Fernando
 Carmo e Lucas Públio serão responsáveis por desenvolver alguns
