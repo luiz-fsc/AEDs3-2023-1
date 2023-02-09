@@ -1,8 +1,14 @@
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class Movies{
+
+    protected byte lapide;
     protected int ranking;
     protected String title;
     protected List<String> genres;
@@ -18,6 +24,7 @@ public class Movies{
 
 
     Movies(){
+        this.lapide = -1;
         this.ranking = 0;
         this.title = "";
         this.genres = new ArrayList<String>();
@@ -33,6 +40,7 @@ public class Movies{
     }
     
     Movies(int ranking, String title, List<String> genres, String description, String director, List<String> actors, int year, int runTime, float rating, int votes, float revenue, byte metascore){
+        this.lapide = 1;
         this.ranking = ranking;
         this.title = title;
         this.genres = genres;
@@ -62,4 +70,37 @@ public class Movies{
         + "\nRevenue: " + this.revenue
         + "\nMetascore: " + this.metascore;
     }
+
+
+    public byte[] toByteArray() throws IOException{
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        DataOutputStream dos = new DataOutputStream(baos);
+
+        dos.writeByte(lapide);
+        dos.writeInt(ranking);
+        dos.writeUTF(title);
+        dos.writeInt(genres.size());
+        for(String genre : genres){
+            dos.writeUTF(genre);
+        }
+        dos.writeUTF(description);
+        dos.writeUTF(director);
+        dos.writeInt(actors.size());
+        for(String actor : actors){
+            dos.writeUTF(actor);
+        }
+        dos.writeInt(c.get(Calendar.YEAR));
+        dos.writeInt(runTime);
+        dos.writeFloat(rating);
+        dos. writeInt(votes);
+        dos.writeFloat(revenue);
+        dos.writeByte(metascore);
+
+        return baos.toByteArray();
+
+    }
+
+
+    
 }
