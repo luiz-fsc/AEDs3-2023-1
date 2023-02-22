@@ -1,15 +1,16 @@
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class Movies{
 
-    protected byte lapide;
-    protected int ranking;
+    //protected byte lapide;
+    protected int id;
     protected String title;
     protected List<String> genres;
     protected String description;
@@ -24,24 +25,22 @@ public class Movies{
 
 
     Movies(){
-        this.lapide = -1;
-        this.ranking = 0;
+        //this.lapide = -1;
         this.title = "";
         this.genres = new ArrayList<String>();
         this.description = "";
         this.director = "";
         this.actors = new ArrayList<String>();
         c.set(Calendar.YEAR, 1000); // Ano simbólico para um objeto temporário
-        this.runTime = 0;
-        this.rating = 0;
-        this.votes = 0;
-        this.revenue = 0;
-        this.metascore = 0;
+        this.runTime = -1;
+        this.rating = -1;
+        this.votes = -1;
+        this.revenue = -1;
+        this.metascore = -1;
     }
     
-    Movies(int ranking, String title, List<String> genres, String description, String director, List<String> actors, int year, int runTime, float rating, int votes, float revenue, byte metascore){
-        this.lapide = 1;
-        this.ranking = ranking;
+    Movies(int id, String title, List<String> genres, String description, String director, List<String> actors, int year, int runTime, float rating, int votes, float revenue, byte metascore){
+        //this.lapide = 1;
         this.title = title;
         this.genres = genres;
         this.description = description;
@@ -55,10 +54,17 @@ public class Movies{
         this.metascore = metascore;
     }
 
+    public void setID(int id) {
+        this.id = id;
+    }
+
+    public int getID() {
+        return this.id;
+    }
+
 
     public String toString(){
-        return "Ranking: " + this.ranking
-        + "\nTitle: " + this.title
+        return "\nTitle: " + this.title
         + "\nGenres: " + this.genres.toString()
         + "\nDescription: " + this.description
         + "\nDirector: " + this.director
@@ -77,27 +83,37 @@ public class Movies{
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);
 
-        dos.writeByte(lapide);
-        dos.writeInt(ranking);
-        dos.writeUTF(title);
-        dos.writeInt(genres.size());
-        for(String genre : genres){
+        //dos.writeByte(lapide);
+        dos.writeUTF(this.title);
+        dos.writeInt(this.genres.size());
+        for(String genre : this.genres){
             dos.writeUTF(genre);
         }
-        dos.writeUTF(description);
-        dos.writeUTF(director);
-        dos.writeInt(actors.size());
-        for(String actor : actors){
+        dos.writeUTF(this.description);
+        dos.writeUTF(this.director);
+        dos.writeInt(this.actors.size());
+        for(String actor : this.actors){
             dos.writeUTF(actor);
         }
-        dos.writeInt(c.get(Calendar.YEAR));
-        dos.writeInt(runTime);
-        dos.writeFloat(rating);
-        dos. writeInt(votes);
-        dos.writeFloat(revenue);
-        dos.writeByte(metascore);
+        dos.writeInt(this.c.get(Calendar.YEAR));
+        dos.writeInt(this.runTime);
+        dos.writeFloat(this.rating);
+        dos. writeInt(this.votes);
+        dos.writeFloat(this.revenue);
+        dos.writeByte(this.metascore);
 
         return baos.toByteArray();
+
+    }
+
+    public void fromByteArray(byte[] ba) throws IOException{
+        ByteArrayInputStream bais = new ByteArrayInputStream(ba);
+        DataInputStream dis = new DataInputStream(bais);
+        
+        int numGenres, numActors;
+
+        id = dis.readInt();
+        title = dis.readUTF();
 
     }
 
