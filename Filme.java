@@ -70,8 +70,7 @@ public class Filme implements Registro {
     
 
     public String toString() {
-        return 
-        + "\nTitle: " + this.title
+        return "\nTitle: " + this.title
         + "\nGenres: " + this.genres.toString()
         + "\nDescription: " + this.description
         + "\nDirector: " + this.director
@@ -92,13 +91,13 @@ public class Filme implements Registro {
         dos.writeUTF(this.title);
         dos.writeInt(this.genres.size());
         for(String genre : genres){
-            dos.writeUTF(this.genre);
+            dos.writeUTF(genre);
         }
         dos.writeUTF(this.description);
         dos.writeUTF(this.director);
         dos.writeInt(this.actors.size());
         for(String actor : actors){
-            dos.writeUTF(this.actor);
+            dos.writeUTF(actor);
         }
         dos.writeInt(calendar.get(Calendar.YEAR));
         dos.writeInt(this.runTime);
