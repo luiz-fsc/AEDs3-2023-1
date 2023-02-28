@@ -5,8 +5,6 @@
  * testagem completa
  * Método toString está gerando problemas
  * 
- * Campos variáveis necessitam conter o tamanho antes do dado de fato
- * 
  * Erro na conversão dos dados:
  *      -> error: incompatible types: List<String> cannot be converted to String
  */
@@ -23,7 +21,7 @@ import java.io.DataOutputStream;
 import java.text.DecimalFormat;
 
 
-public class Filme implements Registro {
+public class Filme{
 
     protected int idFilmes; 
     protected String title;
@@ -79,7 +77,7 @@ public class Filme implements Registro {
     }
     
     /* 
-
+    @override
     public String toString() {
         return 
         + "\nTitle: " + this.title
@@ -105,13 +103,13 @@ public class Filme implements Registro {
         dos.writeUTF(this.title);
         dos.writeInt(this.genres.size());
         for(String genre : genres){
-            dos.writeUTF(this.genres);
+            dos.writeUTF(genre);
         }
         dos.writeUTF(this.description);
         dos.writeUTF(this.director);
         dos.writeInt(this.actors.size());
         for(String actor : actors){
-            dos.writeUTF(this.actors);
+            dos.writeUTF(actor);
         }
         dos.writeInt(calendar.get(Calendar.YEAR));
         dos.writeInt(this.runTime);

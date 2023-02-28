@@ -1,16 +1,14 @@
 import java.io.RandomAccessFile;
 import java.io.File;
-import java.lang.reflect.Constructor;
 
-public class Arquivo<T extends Registro> {
+public class Arquivo{
 
   //Criação Variaveis
   RandomAccessFile arquivo;
-  Constructor<T> construtor;
   final int TAMANHO_CABECALHO = 4;
 
   //O Método cria a pasta dados e as subpastas das classes, verificando a existencia delas antes
-  public Arquivo(String nomeArquivo, Constructor<T> c) throws Exception {
+  public Arquivo(String nomeArquivo) throws Exception {
 
     File f = new File("dados");
     if (!f.exists()) {
@@ -21,14 +19,19 @@ public class Arquivo<T extends Registro> {
       f.mkdir();
     }
     arquivo = new RandomAccessFile("dados/" + nomeArquivo + "/arquivo.db", "rw");
-    construtor = c;
     if (arquivo.length() == 0) {
       arquivo.writeInt(0);
     }
   }
 
+  //Construtor vazio
+  public Arquivo(){}
+  
+
   //Método de inserção no arquivo
-  public int create(T obj) throws Exception {
+  public int create(Filme obj) throws Exception {
+
+    arquivo = new RandomAccessFile("dados/" + "filmes" + "/arquivo.db", "rw"); //GAMBIARRA
 
     arquivo.seek(0);              //vamos para a primeira posição no arquivo
     int ultimoID = arquivo.readInt(); //Lemos o numero de registros no arquivo colocado que também condiz com o ultimo ID alocado
@@ -48,12 +51,12 @@ public class Arquivo<T extends Registro> {
     return proximoID;
   }
 
-  public T read(int idProcurado) throws Exception {
+  public Filme read(int idProcurado) throws Exception {
 
     arquivo.seek(TAMANHO_CABECALHO); // pular o cabeçalho e se posicionar no primeiro registro
     byte lapide;
     int tam;
-    T obj = construtor.newInstance(); //ativamos o construtor para o obj T
+    Filme obj = new Filme(); //ativamos o construtor para o obj Filme
     byte[] ba;
 
     //esquanto não chegar no fim do arquivo
@@ -73,13 +76,60 @@ public class Arquivo<T extends Registro> {
     return null;
   }
 
-  public T delete(int idProcurado) throws Exception {
+  public Filme update(Filme novoObj) throws Exception {
+
+    arquivo.seek(TAMANHO_CABECALHO); // pular o cabeçalho e se posicionar no primeiro registro
+    byte lapide;
+    long posLapide = 0;
+    int tam;
+    Filme obj = new Filme(); //ativamos o construtor para o obj Filme
+    byte[] ba;
+    byte[] baNovo;
+
+    while (arquivo.getFilePointer() < arquivo.length()) {
+
+      arquivo.getFilePointer();  //guardamos a posição da lapide do objeto
+      lapide = arquivo.readByte();  //le a lapide
+      tam = arquivo.readInt();  //le o tamanho do arquivo
+
+      if (lapide == ' ') {  
+        ba = new byte[tam]; //passa o objeto em bytes para o array ba
+        arquivo.read(ba);   // lemos o objeto
+        obj.fromByteArray(ba);  //transformamos em Int e String de novo
+
+        if (obj.getID() == novoObj.getID()) { //verificamos se é o ID que queremos
+          baNovo = novoObj.toByteArray();
+          if(baNovo.length <= tam) {
+            arquivo.seek(posLapide + 2);   //vamos para a posicao da lapide + 2 ou seja logo após o tamanho do registro
+            arquivo.write(baNovo);  //escrevemos o objeto de fato
+          } else {
+            arquivo.seek(posLapide);  //voltamos para a posicao da lapide do objeto com o ponteiro do arquivo
+            arquivo.writeByte('*'); //atualizamos a lapide
+            arquivo.seek(arquivo.length()); //Vamos para o fim do arquivo
+            arquivo.writeByte(' '); //escrevemos a lápide
+            arquivo.writeInt(baNovo.length);  //escrevemos o tamanho do arquivo
+            arquivo.write(baNovo);  //escrevemos o objeto de fato
+          }
+
+          return obj;
+        }
+
+      } else
+        arquivo.skipBytes(tam); //caso lapide esteja marcada, salte esse objeto
+    }
+
+    return null;
+
+  } //FIM UPDATE
+  
+
+  public Filme delete(int idProcurado) throws Exception {
 
     arquivo.seek(TAMANHO_CABECALHO); // pular o cabeçalho e se posicionar no primeiro registro
     byte lapide;
     long posLapide;
     int tam;
-    T obj = construtor.newInstance(); //ativamos o construtor para o obj T
+    Filme obj = new Filme(); //ativamos o construtor para o obj Filme
     byte[] ba;
 
     //esquanto não chegar no fim do arquivo
@@ -98,7 +148,7 @@ public class Arquivo<T extends Registro> {
         if (obj.getID() == idProcurado) //verificamos se é o ID que queremos
           arquivo.seek(posLapide);  //voltamos para a posicao da lapide do objeto com o ponteiro do arquivo
           arquivo.writeByte('*'); //atualizamos a lapide
-          return null;
+          return obj;
 
       } else
         arquivo.skipBytes(tam); //caso lapide esteja marcada, salte esse objeto

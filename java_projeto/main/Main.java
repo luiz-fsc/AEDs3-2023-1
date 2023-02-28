@@ -1,47 +1,27 @@
-
 public class Main {
 
-  
   public static void main(String[] args) {
 
-    //ABERTURA BD
+    //SETANDO VARIAVEIS ARQUIVO E MYCSVREADER
+    Arquivo arqFilmes;
     MyCSVReader csvReader = new MyCSVReader();
-    Filme film = csvReader.openArq();
-    
-    //Arquivo<Livro> arqLivros;
-    //Arquivo<Cliente> arqClientes;
-    Arquivo<Filme> arqFilmes;
 
     try {
 
-      //Livro l1 = new Livro("Eu, Robô", "Isaac Asimov", "9788576572008", 14.90F);
-      //Livro l2 = new Livro("Eu Sou a Lenda", "Richard Matheson", "9788576572718", 21.99F);
-      //Cliente c = new Cliente("José das Couves", "couves@gmail.com");
+      //Criamos o arquivo para conter os registros + o Banco de dados em Binário
+      arqFilmes = new Arquivo("filmes");
 
+      //Abrimos o CSV populando o BD Binário
+      csvReader.openArq();
 
-      // ESCRITA
-      //arqLivros = new Arquivo<>("livros", Livro.class.getConstructor());
-      //arqClientes = new Arquivo<>("clientes", Cliente.class.getConstructor());
-
-      arqFilmes = new Arquivo<>("filmes", Filme.class.getConstructor());
-
-      //arqLivros.create(l1);
-      //arqLivros.create(l2);
-      //arqClientes.create(c);
-
-      arqFilmes.create(film);
-
-      //Livro l3 = arqLivros.read(2);
-      //Cliente c3 = arqClientes.read(1);
-      //Livro l4 = arqLivros.read(3);
-
-      //System.out.println(c3);
-      //System.out.println(l4);
-
+      //Ativamos o Menu com as opções para o usuário
+      Menu menu = new Menu();
+      menu.ativar();
+      
     } catch (Exception e) {
       e.printStackTrace();
     }
 
-  }
+  } //fim main
   
 }
