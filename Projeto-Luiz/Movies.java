@@ -9,7 +9,6 @@ import java.util.List;
 
 public class Movies{
 
-    //protected byte lapide;
     protected int id;
     protected String title;
     protected List<String> genres;
@@ -25,7 +24,6 @@ public class Movies{
 
 
     Movies(){
-        //this.lapide = -1;
         this.title = "";
         this.genres = new ArrayList<String>();
         this.description = "";
@@ -40,7 +38,6 @@ public class Movies{
     }
     
     Movies(int id, String title, List<String> genres, String description, String director, List<String> actors, int year, int runTime, float rating, int votes, float revenue, byte metascore){
-        //this.lapide = 1;
         this.title = title;
         this.genres = genres;
         this.description = description;
@@ -83,7 +80,7 @@ public class Movies{
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(baos);
 
-        //dos.writeByte(lapide);
+        dos.writeInt(this.id);
         dos.writeUTF(this.title);
         dos.writeInt(this.genres.size());
         for(String genre : this.genres){
@@ -112,8 +109,25 @@ public class Movies{
         
         int numGenres, numActors;
 
-        id = dis.readInt();
-        title = dis.readUTF();
+        this.id = dis.readInt();
+        this.title = dis.readUTF();
+        numGenres = dis.readInt();
+        for(int i = 0; i < numGenres; i++){
+            this.genres.add(dis.readUTF());
+        }
+        this.description = dis.readUTF();
+        this.director = dis.readUTF();
+        numActors = dis.readInt();
+        for(int i = 0; i < numActors; i++){
+            this.actors.add(dis.readUTF());
+        }
+        
+        this.c.set(Calendar.YEAR, dis.readInt());
+        this.runTime = dis.readInt();
+        this.rating = dis.readFloat();
+        this.votes = dis.readInt();
+        this.revenue = dis.readFloat();
+        this.metascore = dis.readByte();
 
     }
 
