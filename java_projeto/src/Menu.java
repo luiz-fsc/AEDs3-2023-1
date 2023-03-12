@@ -1,16 +1,18 @@
 import java.io.IOException;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 
 public class Menu extends Arquivo{
 
-      public int ativar() throws IOException {
+      public int ativar() throws Exception {
 
         //Setando variáveis Arquivo + Scanner
         Arquivo arq = new Arquivo();
         Scanner sc = new Scanner(System.in);
         int option;
-        MyCSVReader csvReader = new MyCSVReader();
 
         //Start Menu
         System.out.print("Selecione uma das opcoes abaixo (digite apenas o numero correspondente): \n\n0 - sair \n1 - Ler um registro \n2 - Atualizar um registro \n3 - Deletar um registro \n4 - Repopular Banco de Dados \n\nEscolha:  ");
@@ -77,7 +79,7 @@ public class Menu extends Arquivo{
                 System.out.println("\nPupulando BD...");
 
                 try {
-                    csvReader.openArq();
+                    MyCSVReader.openArq();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -91,7 +93,7 @@ public class Menu extends Arquivo{
         return option;
     }
 
-    public Filme pegarDadosParaUpdate() {
+    public Filme pegarDadosParaUpdate() throws Exception {
 
             //Scanner
             Scanner sc = new Scanner(System.in);
@@ -109,7 +111,9 @@ public class Menu extends Arquivo{
             System.out.print("\n(Float)rating: ");
             Float rating = Float.parseFloat(sc.nextLine());
 
-            //genres
+            System.out.println("(List<String>)genres separados por virgula: ");
+            List<String> genres = Arrays.asList(sc.nextLine().split(","));
+            
 
             System.out.print("\n(String)certificate: ");
             String certificate = (sc.nextLine());
@@ -123,13 +127,21 @@ public class Menu extends Arquivo{
             System.out.print("\n(long)boxOffice: ");
             long boxOffice = Long.parseLong(sc.nextLine());
 
-            //casts
-            //directors
-            //writers
+            System.out.println("(List<String>)casts separados por virgula: ");
+            List<String> casts = Arrays.asList(sc.nextLine().split(","));
+            
+            System.out.println("(List<String>)directors separados por virgula: ");
+            List<String> directors = Arrays.asList(sc.nextLine().split(","));
+            
+            System.out.println("(List<String>)writers separados por virgula: ");
+            List<String> writers = Arrays.asList(sc.nextLine().split(","));
 
 
             //Ativamos o Construtor do Objeto passando os dados
-            Filme aux = new Filme(rank, name, year, rating, genres, certificate, runTime, budget, boxOffice, casts, directors, writers);
+            Filme aux;
+            aux = new Filme(rank, name, year, rating, genres, certificate, runTime, budget, boxOffice, casts, directors, writers);
+            
+            sc.close();
 
             //retornamos o filme ja construido
             return aux;
