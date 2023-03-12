@@ -17,7 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 
 
-public class Filme{
+public class Filme implements Comparable<Filme>{
 
     protected int idFilmes;
     protected int rank; 
@@ -74,6 +74,17 @@ public class Filme{
     
     public int getID() {
         return this.idFilmes;
+    }
+
+    @Override
+    public int compareTo(Filme f){
+        if(this.idFilmes > f.getID()){
+            return -1;
+        }else if(this.idFilmes < f.getID()){
+            return 1;
+        }else{
+            return 0;
+        }
     }
     
      
