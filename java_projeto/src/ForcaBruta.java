@@ -1,12 +1,18 @@
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 public class ForcaBruta{
 
-    public void busca(String chave) {
+    public static void busca(String chave) {
     
         String filePath = "java_projeto\\dados\\filmes\\arquivo.db";
-        byte[] searchData = chave.getBytes();//transformo a chave passada como parâmetro em um array de bytes
+        byte[] searchData = {};
+        try {
+            searchData = chave.getBytes("UTF-8"); //transformo a chave passada como parâmetro em um array de bytes
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         try {
             FileInputStream fileInputStream = new FileInputStream(filePath);
