@@ -15,7 +15,7 @@ public class Menu extends Arquivo{
         int option;
 
         //Start Menu
-        System.out.print("Selecione uma das opcoes abaixo (digite apenas o numero correspondente): \n\n0 - sair \n1 - Ler um registro \n2 - Atualizar um registro \n3 - Deletar um registro \n4 - Repopular Banco de Dados \n\nEscolha:  ");
+        System.out.print("Selecione uma das opcoes abaixo (digite apenas o numero correspondente): \n\n0 - sair \n1 - Ler um registro \n2 - Atualizar um registro \n3 - Deletar um registro \n4 - Repopular Banco de Dados \n5 - KMP\nEscolha:  ");
         
         option = Integer.parseInt(sc.nextLine());
         
@@ -86,6 +86,37 @@ public class Menu extends Arquivo{
 
                 break;
 
+                case 5: // KMP
+                // Registrar o tempo inicial
+                long tempoInicial = System.currentTimeMillis();
+
+                try {
+                    KMP kmp = new KMP();
+                    String padrao = kmp.pegarPadrao();
+                    String texto = new String();
+                    try{
+
+                        texto = kmp.lerArquivoDB();
+            
+                      }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    kmp.AlgKMP(texto, padrao);
+
+                    // Registrar o tempo final
+                    long tempoFinal = System.currentTimeMillis();
+
+                    // Calcular o tempo de execução em milissegundos
+                    long tempoExecucao = tempoFinal - tempoInicial;
+
+                    // Exibir o tempo de execução
+                    System.out.println("Tempo de execução: " + tempoExecucao + " milissegundos");
+    
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                break;
         }   //SWITCH MENU
 
         
