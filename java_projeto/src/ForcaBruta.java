@@ -6,7 +6,7 @@ public class ForcaBruta {
 
     private static int numComp = 0;
     
-    public static int buscaString(String texto, String chave) {
+    private static int buscaString(String texto, String chave) {
         
         int tamanhoTexto = texto.length();
         int tamanhoChave = chave.length();
@@ -42,8 +42,7 @@ public class ForcaBruta {
             pos = buscaString(dados, chave);
             long tempoFinal = System.currentTimeMillis();
             tempoExecucao = tempoFinal - tempoInicial;
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
+        } catch (IOException e) {  
             e.printStackTrace();
         }
 
@@ -65,7 +64,7 @@ public class ForcaBruta {
     }
 
     //metodo para retornar o arquivo em string
-    public static String lerArquivoDB() throws IOException {
+    private static String lerArquivoDB() throws IOException {
 
         File arquivo = new File("java_projeto\\dados\\filmes\\arquivo.db");
         
